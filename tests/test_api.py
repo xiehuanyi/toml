@@ -306,3 +306,14 @@ def test_invalid_bare_keys(key, document):
 def test_quoted_keys_allow_non_bare_characters(key, quote):
     source = quote + key + quote + ' = 1'
     assert toml.loads(source) == {key: 1}
+
+
+@pytest.mark.parametrize('key', ['a"@b', 'a"$b', 'a\\"@b'])
+@pytest.mark.parametrize('document', ['{key} = 1', 'root = {{{key} = 1}}'])
+def test_escaped_quoted_key_characters(key, document):
+    import json
+
+    result = toml.loads(document.format(key=json.dumps(key)))
+    if document != '{key} = 1':
+        result = result['root']
+    assert result == {key: 1}
