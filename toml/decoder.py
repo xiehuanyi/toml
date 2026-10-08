@@ -738,6 +738,13 @@ class TomlDecoder(object):
             if strictly_valid:
                 strictly_valid = _strictly_valid_num(pair[-1])
         pair = ['='.join(pair[:-1]).strip(), pair[-1].strip()]
+        for index, key_part in enumerate(
+                self._get_split_on_quotes(pair[0])):
+            if index % 2 == 0:
+                for bare_key in key_part.split('.'):
+                    bare_key = bare_key.strip()
+                    if bare_key and not _groupname_re.match(bare_key):
+                        raise ValueError("Invalid bare key: " + bare_key)
         if '.' in pair[0]:
             if '"' in pair[0] or "'" in pair[0]:
                 quotesplits = self._get_split_on_quotes(pair[0])
