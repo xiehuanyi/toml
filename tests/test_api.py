@@ -295,6 +295,7 @@ def test_deepcopy_timezone():
 @pytest.mark.parametrize('key, encoded_key', [
     ('a.b', '"a.b"'),
     ('space key', '"space key"'),
+    ('line\n', '"line\\n"'),
     ('quote"key', '"quote\\"key"'),
     ('', '""'),
     (u'unicode\u00e9', u'"unicode\u00e9"'),

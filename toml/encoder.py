@@ -165,7 +165,7 @@ class TomlEncoder(object):
             val_list = []
             for k, v in section.items():
                 key = unicode(k)
-                if not re.match(r'^[A-Za-z0-9_-]+$', key):
+                if not re.match(r'^[A-Za-z0-9_-]+\Z', key):
                     key = _dump_str(key)
                 val = self.dump_inline_table(v)
                 val_list.append(key + " = " + val)
